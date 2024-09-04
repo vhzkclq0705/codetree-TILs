@@ -1,26 +1,19 @@
-import Foundation
-
 func solution() -> Int {
-    var n = Int(readLine()!)!
-    var ans: Int = 0
+    let n = Int(readLine()!)!
+    var cnt5 = n / 5
+    var remainder = n % 5
 
-    while n > 0 {
-        if n % 5 == 0 {
-            n -= 5
-            ans += 1
-            continue
+    while cnt5 >= 0 {
+        if remainder % 3 == 0 {
+            let cnt3 = remainder / 3
+            return cnt3 + cnt5
         }
 
-        if n % 3 == 0 {
-            n -= 3
-            ans += 1
-            continue
-        }
-
-        return -1
+        cnt5 -= 1
+        remainder += 5
     }
 
-    return ans
+    return -1
 }
 
 print(solution())
