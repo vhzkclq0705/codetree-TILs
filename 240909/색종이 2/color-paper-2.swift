@@ -7,27 +7,27 @@ func solution() {
     var ans = 0
 
     for _ in 0..<n {
-        let paper = readLine()!.split(separator: " ").map { Int($0)! + 1 }
+        let input = readLine()!.split(separator: " ").map { Int($0)! }
+        let (x, y) = (input[0], input[1])
 
-        for i in paper[0]..<paper[0] + 10 {
-            for j in paper[1]..<paper[1] + 10 {
+        for i in x..<x + 10 {
+            for j in y..<y + 10 {
                 board[i][j] = 1
             }
         }
     }
 
-    for x in 0...100 {
-        for y in 0...100 where board[x][y] == 1 {
-            let cnt = dxy.reduce(into: 0) {
-                let nx = $1.0 + x
-                let ny = $1.1 + y
+    for x in 1..<101 {
+        for y in 1..<101 where board[x][y] == 1 {
+            for (dx, dy) in dxy {
+                let nx = x + dx
+                let ny = y + dy
 
-                if nx >= 0 && nx <= 100 && ny >= 0 && ny <= 100 {
-                    $0 += board[x + $1.0][y + $1.1] == 0 ? 1 : 0
+                if nx < 1 || nx > 100 || ny < 1 || ny > 100 || board[nx][ny] == 0 {
+                    ans += 1
                 }
             }
-            ans += cnt
-        } 
+        }
     }
 
     print(ans)
