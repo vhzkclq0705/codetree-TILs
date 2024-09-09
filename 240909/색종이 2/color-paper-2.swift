@@ -3,7 +3,7 @@ import Foundation
 func solution() {
     let n = Int(readLine()!)!
     var board = [[Int]](repeating: [Int](repeating: 0, count: 101), count: 101)
-    let dxy = [(0, -1), (0, 1), (-1, 0), (0, 1)]
+    let dxy = [(0, -1), (0, 1), (-1, 0), (1, 0)]
     var ans = 0
 
     for _ in 0..<n {
