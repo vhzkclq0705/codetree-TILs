@@ -2,7 +2,7 @@ import Foundation
 
 func solution() {
     let n = Int(readLine()!)!
-    var board = [[Int]](repeating: [Int](repeating: 0, count: 101), count: 101)
+    var board = [[Int]](repeating: [Int](repeating: 0, count: 102), count: 102)
     let dxy = [(0, -1), (0, 1), (-1, 0), (1, 0)]
     var ans = 0
 
@@ -23,7 +23,7 @@ func solution() {
                 let nx = x + dx
                 let ny = y + dy
 
-                if nx < 1 || nx > 100 || ny < 1 || ny > 100 || board[nx][ny] == 0 {
+                if nx < 1 || nx >= 101 || ny < 1 || ny >= 101 || board[nx][ny] == 0 {
                     ans += 1
                 }
             }
