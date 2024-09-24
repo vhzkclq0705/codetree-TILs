@@ -17,4 +17,4 @@ for alphabet in alphabets {
     }
 }
 
-print(stk.count / 2 - 1)
+print(stk.count > 0 ? stk.count / 2 - 1 : 0)
