@@ -1,31 +1,45 @@
 import Foundation
 
-func bfs(_ nums: inout [Int], _ blocked: Set<Int>) {
+struct PositionState: Hashable {
+    let position: Int
+    let jump: Int
+
+    init(_ position: Int, _ jump: Int) {
+        self.position = position
+        self.jump = jump
+    }
+}
+
+func bfs(_ n: Int, _ blocked: Set<Int>) -> Int {
     var idx = 0
-    var queue = [1]
-    nums[1] = 1
+    var queue = [(PositionState(1, 1), 1)]
+    var visited = Set<(PositionState)>()
+    visited.insert(PositionState(1, 1))
 
     while idx < queue.count {
-        let x = queue[idx]
+        let (state, cnt) = queue[idx]
         idx += 1
-        let dx = [x - 1, x * 2, x + 1]
 
-        for nx in [x - 1, x * 2, x + 1] {
-            if 0 <= nx && nx < nums.count && !blocked.contains(nx) && nums[nx] == 10001 {
-                nums[nx] = nums[x] + 1
-                queue.append(nx)
+        if state.position == n {
+            return cnt
+        }
+
+        for dx in [state.jump - 1, state.jump, state.jump + 1] {
+            let nx = state.position + dx
+            if dx >= 1 && nx <= n && !blocked.contains(nx) && !visited.contains(PositionState(nx, dx)) {
+                visited.insert(PositionState(nx, dx))
+                queue.append((PositionState(nx, dx), cnt + 1))
             }
         }
     }
+
+    return -1
 }
 
 let input = readLine()!.split(separator: " ").map { Int($0)! }
 let (n, m) = (input[0], input[1])
-var nums = Array(repeating: 10001, count: n)
 let blocked = (0..<m).reduce(into: Set<Int>()) { s, _ in
     s.insert(Int(readLine()!)!)
 }
 
-bfs(&nums, blocked)
-
-print(nums.last!)
+print(bfs(n, blocked))
