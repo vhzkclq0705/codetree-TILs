@@ -37,7 +37,7 @@ func getFistRelics(_ board: [[Int]]) -> Int {
     return cnt
 }
 
-func getChainedRelics(_ board: inout [[Int]], _ idx: Int, _ relics: [Int]) -> Int {
+func getChainedRelics(_ board: inout [[Int]], _ relics: inout [Int]) -> Int {
     var cnt = 0
 
     while true {
@@ -59,7 +59,7 @@ func getChainedRelics(_ board: inout [[Int]], _ idx: Int, _ relics: [Int]) -> In
         }
 
         for (x, y) in path {
-            board[x][y] = relics[idx + cnt]
+            board[x][y] = relics.popLast()!
             cnt += 1
         }
     }
@@ -119,15 +119,13 @@ func rotate270(_ x: Int, _ y: Int, _ board: [[Int]]) -> [[Int]] {
 let input = readLine()!.split(separator: " ").map { Int($0)! }
 let (k, m) = (input[0], input[1])
 var board = (0..<5).map { _ -> [Int] in readLine()!.split(separator: " ").map { Int($0)! } }
-let relics = readLine()!.split(separator: " ").map { Int($0)! }
-var relicsIdx = 0
+var relics = readLine()!.split(separator: " ").reversed().map { Int($0)! }
 
 for _ in 0..<k {
-    var rotatedBoard = [[Int]]()
-    var maxValue = 0
+    var results = [(Int, Int, Int, Int, [[Int]])]()
 
-    for y in 0..<3 {
-        for x in 0..<3 {
+    for x in 0..<3 {
+        for y in 0..<3 {
             let rotated90Board = rotate90(x, y, board)
             let rotated180Board = rotate180(x, y, board)
             let rotated270Board = rotate270(x, y, board)
@@ -136,27 +134,27 @@ for _ in 0..<k {
             let res180 = getFistRelics(rotated180Board)
             let res270 = getFistRelics(rotated270Board)
 
-            if res270 >= maxValue {
-                rotatedBoard = rotated270Board
-                maxValue = res270
+            if res90 >= 3 {
+                results.append((res90, 90, y, x, rotated90Board))
             }
-            if res180 >= maxValue {
-                rotatedBoard = rotated180Board
-                maxValue = res180
+            if res180 >= 3 {
+                results.append((res180, 180, y, x, rotated180Board))
             }
-            if res90 >= maxValue {
-                rotatedBoard = rotated90Board
-                maxValue = res90
+            if res270 >= 3 {
+                results.append((res270, 270, y, x, rotated270Board))
             }
         }
     }
 
-    if maxValue == 0 {
+    if results.isEmpty {
         break
     }
 
-    let res = getChainedRelics(&rotatedBoard, relicsIdx, relics)
-    relicsIdx += res
+    var rotatedBoard = results.sorted {
+        ($0.0, -$0.1, -$0.2, -$0.3) > ($1.0, -$1.1, -$1.2, -$1.3)
+    }.first!.4
+
+    let res = getChainedRelics(&rotatedBoard, &relics)
     board = rotatedBoard
 
     print(res, terminator: " ")
