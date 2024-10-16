@@ -7,21 +7,19 @@ func dfs(_ idx: Int, _ d: Int, _ visited: inout [Int]) {
     visited[idx] = d
 
     for i in stride(from: idx - 1, through: 0, by: -1) {
-        if chairs[idx][6] != chairs[i][2] && visited[i] == 0 {
-            dfs(i, -d, &visited)
-        }
-        else {
+        guard chairs[idx][6] != chairs[i][2] && visited[i] == 0 else {
             break
         }
+        dfs(i, -d, &visited)
+        return
     }
 
     for i in (idx + 1)..<4 {
-        if chairs[idx][2] != chairs[i][6] && visited[i] == 0 {
-            dfs(i, -d, &visited)
-        }
-        else {
+        guard chairs[idx][2] != chairs[i][6] && visited[i] == 0 else {
             break
         }
+        dfs(i, -d, &visited)
+        return
     }
 
     return
