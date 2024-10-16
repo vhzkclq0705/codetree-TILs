@@ -11,7 +11,7 @@ func dfs(_ idx: Int, _ d: Int, _ visited: inout [Int]) {
             break
         }
         dfs(i, -d, &visited)
-        return
+        break
     }
 
     for i in (idx + 1)..<4 {
@@ -19,7 +19,7 @@ func dfs(_ idx: Int, _ d: Int, _ visited: inout [Int]) {
             break
         }
         dfs(i, -d, &visited)
-        return
+        break
     }
 
     return
