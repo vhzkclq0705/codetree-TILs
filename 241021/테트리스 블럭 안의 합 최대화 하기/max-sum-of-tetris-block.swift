@@ -19,11 +19,14 @@ func createAllPoints(_ points: [[(Int, Int)]]) -> Set<[Point]> {
 
     for pointArray in points {
         var newPoints = [Point]()
+        var newReversedPoints = [Point]()
 
         for (x, y) in pointArray {
-            newPoints.append(Point(y, x))
+            newPoints.append(Point(x, y))
+            newReversedPoints.append(Point(y, x))
         }
         allPoints.insert(newPoints)
+        allPoints.insert(newReversedPoints)
     }
 
     return allPoints
