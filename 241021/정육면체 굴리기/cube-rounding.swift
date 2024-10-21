@@ -12,7 +12,7 @@ struct Dice {
         switch direction {
         case 1: rollToEast()
         case 2: rollToWest()
-        case 3: rollToNotrh()
+        case 3: rollToNorth()
         case 4: rollToSouth()
         default: break
         }
@@ -36,7 +36,7 @@ struct Dice {
         r = tmp
     }
 
-    mutating func rollToNotrh() {
+    mutating func rollToNorth() {
         let tmp = u
         u = b
         b = d
@@ -66,7 +66,7 @@ func inputIntArray() -> [Int] {
 }
 
 let input = inputIntArray()
-let (n, m, k) = (input[0], input[1], input[4])
+let (n, m) = (input[0], input[1])
 var (x, y) = (input[2], input[3])
 var board = (0..<n).map { _ -> [Int] in inputIntArray() }
 let directions = inputIntArray()
@@ -87,6 +87,7 @@ for d in directions {
             board[nx][ny] = dice.getDiceDown()
         } else {
             dice.setDiceDown(num)
+            board[nx][ny] = 0
         }
 
         x = nx
