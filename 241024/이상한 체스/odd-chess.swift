@@ -41,8 +41,15 @@ func visitNewArea(_ type: Int, _ x: Int, _ y: Int, _ d: Int) -> Set<String> {
     case 1:
         move(x, y, d)
     case 2:
-        move(x, y, 0)
-        move(x, y, 1)
+        switch d {
+        case 0:
+            move(x, y, 0)
+            move(x, y, 1)
+        case 1:
+            move(x, y, 2)
+            move(x, y, 3)
+        default: break
+        }
     case 3:
         switch d {
         case 0:
@@ -101,7 +108,8 @@ func dfs(_ idx: Int, _ visited: Set<String>) {
     let directionCnt: Int
     switch piece.type {
     case 1, 3, 4: directionCnt = 4
-    case 2, 5: directionCnt = 1
+    case 2: directionCnt = 2
+    case 5: directionCnt = 1
     default: directionCnt = 0
     }
 
