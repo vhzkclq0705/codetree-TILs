@@ -136,6 +136,6 @@ for x in 0..<n {
     }
 }
 
-dfs(0, [])
+dfs(0, Set<String>())
 
 print(minValue)
