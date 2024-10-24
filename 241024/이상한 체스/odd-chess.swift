@@ -6,11 +6,11 @@ struct Piece {
     let y: Int
 }
 
-func calcuateArea(_ visited: Set<String>) -> Int {
+func calcuateArea(_ visited: [[Bool]]) -> Int {
     var cnt = 0
 
     for x in 0..<n {
-        for y in 0..<m where board[x][y] == 0 && !visited.contains("\(x),\(y)") {
+        for y in 0..<m where board[x][y] == 0 && !visited[x][y] {
             cnt += 1
         }
     }
@@ -18,9 +18,7 @@ func calcuateArea(_ visited: Set<String>) -> Int {
     return cnt
 }
 
-func visitNewArea(_ type: Int, _ x: Int, _ y: Int, _ d: Int) -> Set<String> {
-    var visited = Set<String>()
-
+func visitNewArea(_ type: Int, _ x: Int, _ y: Int, _ d: Int, _ visited: inout [[Bool]]) {
     func isValid(_ x: Int, _ y: Int) -> Bool {
         return x >= 0 && x < n && y >= 0 && y < m && board[x][y] != 6
     }
@@ -31,7 +29,7 @@ func visitNewArea(_ type: Int, _ x: Int, _ y: Int, _ d: Int) -> Set<String> {
         var ny = y + dy
 
         while isValid(nx, ny) {
-            visited.insert("\(nx),\(ny)")
+            visited[nx][ny] = true
             nx += dx
             ny += dy
         }
@@ -93,11 +91,9 @@ func visitNewArea(_ type: Int, _ x: Int, _ y: Int, _ d: Int) -> Set<String> {
         move(x, y, 3)
     default: break
     }
-
-    return visited
 }
 
-func dfs(_ idx: Int, _ visited: Set<String>) {
+func dfs(_ idx: Int, _ visited: [[Bool]]) {
     if idx == pieces.count {
         let cnt = calcuateArea(visited)
         minValue = min(minValue, cnt)
@@ -113,11 +109,11 @@ func dfs(_ idx: Int, _ visited: Set<String>) {
     default: directionCnt = 0
     }
 
+    var newVisited = visited
     for d in 0..<directionCnt {
-        let newVisited = visited.union(
-            visitNewArea(piece.type, piece.x, piece.y, d)
-        )
+        visitNewArea(piece.type, piece.x, piece.y, d, &newVisited)
         dfs(idx + 1, newVisited)
+        newVisited = visited
     }
 
     return
@@ -126,6 +122,7 @@ func dfs(_ idx: Int, _ visited: Set<String>) {
 let input = readLine()!.split(separator: " ").map { Int($0)! }
 let (n, m) = (input[0], input[1])
 var board = (0..<n).map { _ -> [Int] in readLine()!.split(separator: " ").map { Int($0)! } }
+let visited = Array(repeating: Array(repeating: false, count: m), count: n)
 let dxy = [(0, 1), (0, -1), (1, 0), (-1, 0)]
 var pieces = [Piece]()
 var minValue = Int.max
@@ -136,6 +133,6 @@ for x in 0..<n {
     }
 }
 
-dfs(0, Set<String>())
+dfs(0, visited)
 
 print(minValue)
