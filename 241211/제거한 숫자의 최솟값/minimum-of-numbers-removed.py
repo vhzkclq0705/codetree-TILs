@@ -5,7 +5,7 @@ n = int(input())
 nums = sorted(map(int, input().split()))
 ans = 0 if not n % 2 else nums.pop()
 
-for i in range(n // 2):
+for i in range((n - 1) // 2):
     ans = max(ans, nums[i] + nums[n - i - 1])
 
 print(ans)
